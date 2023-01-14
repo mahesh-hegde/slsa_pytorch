@@ -9,7 +9,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v2.6.0 ## Must use x.y.z format
-      - uses: conda-incubator/setup-miniconda@2.2.0
+      - uses: conda-incubator/setup-miniconda@v2.2.0
         with:
           python-version: 3.10.9        ## Specify version
       - name: 'Install common dependencies'
