@@ -1,0 +1,36 @@
+name: slsa-pytorch-build
+run-name: slsa-pytorch-build
+on: [push]
+jobs:
+  build-pytorch:
+    name: 'Build PyTorch'
+    env:
+      USES_CUDA: 0
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v2.6.0 ## Must use x.y.z format
+        with:
+          python-version: 3.10.9        ## Specify version
+      - name: 'Install common dependencies'
+        run: conda install astunparse numpy ninja pyyaml setuptools cmake cffi
+      - name: 'Install python dependencies'
+        run: conda install typing_extensions future six requests dataclasses
+      - name: 'Install Linux-specific dependencies'
+        run: conda install mkl mkl-include
+      - name: 'Get pytorch source'
+        run: |
+          git clone --recursive https://github.com/pytorch/pytorch
+          cd pytorch
+          git submodule sync
+          git submodule update --init --recursive
+      - name: 'Build pytorch'
+        run: |
+          export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(which conda))/../"}
+          python setup.py develop
+        working-directory: pytorch
+      - name: 'Run tests'
+        working-directory: pytorch
+        run: |
+          conda install pytest
+          pytest
+
