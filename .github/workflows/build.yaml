@@ -24,6 +24,7 @@ jobs:
           git submodule update --init --recursive
       - name: 'Build pytorch'
         run: |
+          conda activate
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(which conda))/../"}
           python setup.py develop
         working-directory: pytorch
