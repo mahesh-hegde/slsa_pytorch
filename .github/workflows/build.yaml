@@ -12,22 +12,32 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2.2.0
       - name: 'Install common dependencies'
         run: conda install astunparse numpy ninja pyyaml setuptools cmake cffi
+      - name: 'Cache cloned pytorch repo until build works'
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-sources
+        with:
+          path: /home/runner/work/slsa_pytorch/slsa_pytorch/pytorch
+          key: '0'
       - name: 'Install python dependencies'
         run: conda install typing_extensions future six requests dataclasses
       - name: 'Install Linux-specific dependencies'
         run: conda install mkl mkl-include
       - name: 'Get pytorch source'
         run: |
-          git clone --recursive https://github.com/pytorch/pytorch
+          git clone --recursive https://github.com/pytorch/pytorch || echo "Using cache"
           cd pytorch
           git submodule sync
           git submodule update --init --recursive
       - name: 'Build pytorch'
         run: |
+          conda init bash
+          source ~/.bashrc
           conda activate
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(which conda))/../"}
           python setup.py develop
         working-directory: pytorch
+        shell: bash
       - name: 'Run tests'
         working-directory: pytorch
         run: |
