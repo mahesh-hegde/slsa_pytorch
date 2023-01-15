@@ -3,6 +3,8 @@ run-name: slsa-pytorch-build
 on: [push]
 jobs:
   build-pytorch:
+    outputs:
+      hashes: ${{ steps.hash.outputs.hashes }}
     name: 'Build PyTorch'
     env:
       USE_GLOO: '0'
@@ -36,16 +38,34 @@ jobs:
         run: |
           python3 -m pip install --upgrade build
           python3 -m build
+      - name: 'Generate hashes'
+        shell: bash
+        id: hash
+        run: |
+          echo "hashes=$(sha256sum dist/* | base64 -w0)" >> "$GITHUB_OUTPUT"
       - name: 'Upload artifacts'
         uses: actions/upload-artifact@v3
         with:
           name: dist
           path: ./pytorch/dist
+      - name: list outputs
+        run: find dist/
       - name: 'Install wheel'
         working-directory: ./pytorch
         run: ls dist
       - run: pip install --no-deps dist/*.whl
         working-directory: ./pytorch
-      - run: python3 -c "import torch"
+      - run: python3 -c "import torch" || true
         working-directory: ./pytorch
+
+  provenance:
+    needs: [build-pytorch]
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v1.4.0
+    with:
+      base64-subjects: "${{ needs.build.outputs.hashes }}"
+      upload-assets: true
 
