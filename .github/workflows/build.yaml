@@ -12,6 +12,8 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2.2.0
       - name: 'Install common dependencies'
         run: conda install astunparse numpy ninja pyyaml setuptools cmake cffi
+      - name: 'Install libstcxx-ng' # https://stackoverflow.com/questions/48453497/anaconda-libstdc-so-6-version-glibcxx-3-4-20-not-found
+        run: conda install -c anaconda libstdcxx-ng
       - name: 'Cache cloned pytorch repo until build works'
         uses: actions/cache@v3
         env:
