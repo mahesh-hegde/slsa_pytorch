@@ -5,7 +5,7 @@ jobs:
   build-pytorch:
     name: 'Build PyTorch'
     env:
-      USES_CUDA: 0
+      USE_GLOO: '0'
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v2.6.0 ## Must use x.y.z format
