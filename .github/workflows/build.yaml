@@ -38,4 +38,18 @@ jobs:
           python setup.py develop
         working-directory: pytorch
         shell: bash
+      - name: 'Create wheel'
+        run: |
+          python3 -m pip install --upgrade build
+          python3 -m build
+      - name: 'Upload artifacts'
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: |
+            dist/
+      - name: 'Install wheel'
+        run: ls dist
+        run: pip install --no-deps dist/*.whl
+        run: python3 -c "import pytorch"
 
