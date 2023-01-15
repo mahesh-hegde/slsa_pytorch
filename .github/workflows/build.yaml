@@ -29,16 +29,7 @@ jobs:
           cd pytorch
           git submodule sync
           git submodule update --init --recursive
-      - name: 'Build pytorch'
-        run: |
-          conda init bash
-          source ~/.bashrc
-          conda activate
-          export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(which conda))/../"}
-          python setup.py develop
-        working-directory: ./pytorch
-        shell: bash
-      - name: 'Create wheel'
+     - name: 'Create wheel'
         working-directory: ./pytorch
         run: |
           python3 -m pip install --upgrade build
@@ -53,6 +44,6 @@ jobs:
         run: ls dist
       - run: pip install --no-deps dist/*.whl
         working-directory: ./pytorch
-      - run: python3 -c "import pytorch"
+      - run: python3 -c "import torch"
         working-directory: ./pytorch
 
