@@ -50,6 +50,6 @@ jobs:
             dist/
       - name: 'Install wheel'
         run: ls dist
-        run: pip install --no-deps dist/*.whl
-        run: python3 -c "import pytorch"
+      - run: pip install --no-deps dist/*.whl
+      - run: python3 -c "import pytorch"
 
