@@ -44,12 +44,12 @@ jobs:
           python3 -m pip install --upgrade build
           python3 -m build
       - name: 'Upload artifacts'
-        working-directory: pytorch
         uses: actions/upload-artifact@v3
         with:
           name: dist
           path: |
             dist/
+        working-directory: pytorch
       - name: 'Install wheel'
         working-directory: pytorch
         run: ls dist
