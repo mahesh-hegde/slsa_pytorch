@@ -50,11 +50,10 @@ jobs:
           path: ./pytorch/dist
       - name: list outputs
         run: find dist/
+        working-directory: ./pytorch
       - name: 'Install wheel'
         working-directory: ./pytorch
-        run: ls dist
-      - run: pip install --no-deps dist/*.whl
-        working-directory: ./pytorch
+        run: pip install --no-deps dist/*.whl
       - run: python3 -c "import torch" || true
         working-directory: ./pytorch
 
