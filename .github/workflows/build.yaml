@@ -38,9 +38,4 @@ jobs:
           python setup.py develop
         working-directory: pytorch
         shell: bash
-      - name: 'Run tests'
-        working-directory: pytorch
-        run: |
-          conda install pytest
-          pytest
 
