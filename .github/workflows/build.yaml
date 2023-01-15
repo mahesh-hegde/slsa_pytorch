@@ -29,7 +29,7 @@ jobs:
           cd pytorch
           git submodule sync
           git submodule update --init --recursive
-     - name: 'Create wheel'
+      - name: 'Create wheel'
         working-directory: ./pytorch
         run: |
           python3 -m pip install --upgrade build
