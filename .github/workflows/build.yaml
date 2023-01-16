@@ -2,7 +2,7 @@ name: slsa-pytorch-build
 run-name: slsa-pytorch-build
 on: [push]
 jobs:
-  build-pytorch:
+  build:
     outputs:
       hashes: ${{ steps.hash.outputs.hashes }}
     name: 'Build PyTorch'
@@ -57,7 +57,7 @@ jobs:
         shell: bash
 
   provenance:
-    needs: [build-pytorch]
+    needs: [build]
     permissions:
       actions: read
       id-token: write
