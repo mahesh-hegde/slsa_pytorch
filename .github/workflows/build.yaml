@@ -54,7 +54,10 @@ jobs:
       - name: 'Install wheel'
         working-directory: ./pytorch
         run: pip install --no-deps dist/*.whl
-      - run: python3 -c "import torch" || true
+      - name: check if torch can be imported
+        run: |
+          conda activate
+          python3 -c "import torch" || true
         working-directory: ./pytorch
 
   provenance:
