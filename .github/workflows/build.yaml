@@ -36,6 +36,7 @@ jobs:
         id: hash
         run: |
           echo "hashes=$(sha256sum dist/* | base64 -w0)" >> "$GITHUB_OUTPUT"
+        working-directory: ./pytorch
       - name: 'Upload artifacts'
         uses: actions/upload-artifact@v3
         with:
