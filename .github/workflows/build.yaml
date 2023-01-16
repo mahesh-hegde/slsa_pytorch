@@ -54,7 +54,6 @@ jobs:
           source ~/.bashrc
           conda activate
           python3 -c "import torch" || true
-        working-directory: ./pytorch
         shell: bash
 
   provenance:
